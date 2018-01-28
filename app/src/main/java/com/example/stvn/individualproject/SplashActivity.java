@@ -1,16 +1,13 @@
 /**
  * STEVEN CRUICKSHANK
- * PROJECT THREE - SHOW ME WHAT YOU GOT
+ * PROJECT THREE - Reservation App
  *
- * On the professors suggestion, i took the existing reservation app, and loaded it with new features
- * and a fresh new UI.
- *
- * All of the requirements are met:
+ * Features:
  * -SQLite Database ~ Date, Time, Name, Phone, and Location are written to a SQLite database
  *
  * -Location Services ~ When a user makes a reservation, location services takes note of the users
  * last location, and lists those coordinates in the DB. knowing where your reservations are coming
- * from is a fantastic way to target specific areas with advertising.
+ * from is a fantastic way to target specific areas with advertising/marketing.
  *
  * -Audio/Video ~ jazzy piano and background noises (clanking, light chatting) play while the user makes
  * their reservation. At the very top is a looping video of a nameless couple enjoying a meal.
@@ -24,9 +21,9 @@
  * prompt, via intents
  *
  * -UI that works in landscape - Designed a landscape layout for the UI that looks very nice.
- * All data is preserved on rotation. There is a slight problem with the audio, in that if you
- * rotate and attempt to stop/play, new audioclips will start to play over the existing.
+ * All data is preserved on rotation.
  */
+
 package com.example.stvn.individualproject;
 
 import android.content.Intent;
@@ -36,6 +33,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Created by stvn on 12/6/17.
  */
+//splash screen
 
 public class SplashActivity extends AppCompatActivity {
 

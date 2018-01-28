@@ -1,16 +1,13 @@
 /**
  * STEVEN CRUICKSHANK
- * PROJECT THREE - SHOW ME WHAT YOU GOT
+ * PROJECT THREE - Reservation App
  *
- * On the professors suggestion, i took the existing reservation app, and loaded it with new features
- * and a fresh new UI.
- *
- * All of the requirements are met:
+ * Features:
  * -SQLite Database ~ Date, Time, Name, Phone, and Location are written to a SQLite database
  *
  * -Location Services ~ When a user makes a reservation, location services takes note of the users
  * last location, and lists those coordinates in the DB. knowing where your reservations are coming
- * from is a fantastic way to target specific areas with advertising.
+ * from is a fantastic way to target specific areas with advertising/marketing.
  *
  * -Audio/Video ~ jazzy piano and background noises (clanking, light chatting) play while the user makes
  * their reservation. At the very top is a looping video of a nameless couple enjoying a meal.
@@ -24,8 +21,7 @@
  * prompt, via intents
  *
  * -UI that works in landscape - Designed a landscape layout for the UI that looks very nice.
- * All data is preserved on rotation. There is a slight problem with the audio, in that if you
- * rotate and attempt to stop/play, new audioclips will start to play over the existing.
+ * All data is preserved on rotation.
  */
 
 
@@ -74,71 +70,63 @@ public class ResFragment extends DialogFragment {
 
     //member variables
     public static Res mRes;
-    public ResLab rLab;
-    public Res newRes;
+
     private EditText mPhoneField;
     private EditText mNameField;
+
     public static String testString;
-    public static TextView stringReserv;
     public static String totalReservation = "";
-    public Button mDateFrag;
-    public Button mTimeFrag;
-    public Button mMessageBt;
-    public Button mPhoneCall;
-    public Button mAddRes;
-    public VideoView mFoodVid;
-    public static MediaPlayer mFoodSounds;
-    public Menu mIconChangeMenu;
+
     public static int mDay;
     public static int mMonth;
     public static int mYear;
     public static int mMinute;
     public static int mHour;
+
+    public static TextView stringReserv;
+
+    public Button mDateFrag;
+    public Button mTimeFrag;
+    public Button mMessageBt;
+    public Button mPhoneCall;
+    public Button mAddRes;
+
+    public VideoView mFoodVid;
+    public static MediaPlayer mFoodSounds;
+
+    public Menu mIconChangeMenu;
+
     public boolean isTimeSet = false;
     public boolean isDateSet = false;
-    public List<Res> allRes;
-    private FusedLocationProviderClient mFusedLocationClient;
-    public String longi;
+
     public int mCounter;
-    public String nameHolder;
 
     //onCreate sets bool flags to false
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRes = new Res();
-        //ResLab.sCrimeLab.addCrime(mRes);
-        //ResLab.get(getActivity()).addCrime(mRes);
         timeFlag = false;
         FragmentDate.dateFlag = false;
         isTimeSet = false;
         isDateSet = false;
         setHasOptionsMenu(true);
         setRetainInstance(true);
-        //mFoodSounds = MediaPlayer.create(this.getActivity(), R.raw.foodnoise);
 
         if (savedInstanceState != null) {
-            mNameField.setText(savedInstanceState.getString(RES_NAME));//mCounter = savedInstanceState.getInt(STATE_COUNTER, 0);
+            mNameField.setText(savedInstanceState.getString(RES_NAME));
             mPhoneField.setText(savedInstanceState.getString(RES_PHONE));
-            //mFoodSounds.start();
             mIconChangeMenu.getItem(0).setIcon(ContextCompat.getDrawable(this.getActivity(), R.drawable.ic_volume_up));
-
-            //mFoodSounds = MediaPlayer.create(this.getActivity(), R.raw.foodnoise);
-            //mFoodSounds.setLooping(true);
-            //mFoodSounds.start();
-            //setHasOptionsMenu(true);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // Make sure to call the super method so that the states of our views are saved
         super.onSaveInstanceState(outState);
-        // Save our own state now
         outState.putInt(STATE_COUNTER, mCounter);
         outState.putString(RES_NAME, mRes.getResName());
         outState.putString(RES_PHONE, mRes.getResPh());
-        mFoodSounds.pause();
+        mFoodSounds.pause(); //pauses audio on saved instance
     }
 
     @Override
@@ -148,10 +136,12 @@ public class ResFragment extends DialogFragment {
         mIconChangeMenu = menu;
         Log.e(TAG,"menu error");
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         Log.e(TAG,"menu error");
         switch(item.getItemId()){
+            //if the audio is selected, an if block determins whether audio was playing, and what to do
             case R.id.mod_sound:
                 if (mFoodSounds.isPlaying()) {
                     mFoodSounds.pause();
@@ -164,6 +154,7 @@ public class ResFragment extends DialogFragment {
                 }
 
                 return true;
+            //clear all the fields, and reset flags
             case R.id.clear:
                 mRes.setResName("");
                 mRes.setResDate("");
@@ -190,6 +181,7 @@ public class ResFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
+        //handles video and audio
         mFoodSounds = MediaPlayer.create(this.getActivity(), R.raw.foodnoise);
         mFoodSounds.setLooping(true);
         mFoodSounds.start();
@@ -203,9 +195,7 @@ public class ResFragment extends DialogFragment {
             }
         });
         mFoodVid.start();
-        /**
-         * VERY IMPORTANT FOR DB
-         */
+
         //allRes = ResLab.get(getActivity()).getSpecificRes(null, null, ResSchema.ResTable.Cols.R_DATE);
 
 
@@ -310,27 +300,10 @@ public class ResFragment extends DialogFragment {
         //text field to display the full reservation
         mDateFrag = (Button) v.findViewById(R.id.buttonDateFrag);
         stringReserv = (TextView)v.findViewById(R.id.resstring);
-        //stringReserv.setText(mRes.getResLoc());
 
-
-        /**
-         * HOW TO ACCESS DB STUFF
-
-        RIGHT HERE.
-         */
-        //
-        //
-        //
-
-        //stringReserv.setText(allRes.get(0).getResLoc());
-
-        //Cursor cursor = new Cursor();
-
-        //opens a datepicker fragment if the user has entered a phone number
         mDateFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if (mRes.getResPh() != null && mRes.getResPh().length() == 10) {
 
                     DialogFragment picker = new FragmentDate();
                     picker.show(getFragmentManager(), "datePicker");
@@ -339,14 +312,13 @@ public class ResFragment extends DialogFragment {
                         mDateFrag.setEnabled(false);
                         mDateFrag.setText("Date Set!");
                     }
-               // if (FragmentDate.dateFlag == true && TimePickerFragment.timeFlag == true) {
                     stringReserv.setText(testString);
-                //}
 
 
             }
 
         });
+
         //opens a timepicker fragment if the user has entered a phone number
         mTimeFrag = (Button) v.findViewById(R.id.buttonTimeFrag);
         mTimeFrag.setOnClickListener(new View.OnClickListener() {
@@ -362,21 +334,18 @@ public class ResFragment extends DialogFragment {
                     mTimeFrag.setText("Time Set!");
 
                 }
-                //if (FragmentDate.dateFlag == true && TimePickerFragment.timeFlag == true) {
-                    //stringReserv.setText(mRes.getResDate() + mRes.getResTime());
-                //}
 
             }
 
         });
-        //mTimeFrag.setO
 
+        //add reservation to database
         mAddRes = (Button) v.findViewById(R.id.buttonAddRes);
         mAddRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                ResLab.get(getActivity()).addCrime(mRes);
+                ResLab.get(getActivity()).addRes(mRes);
 
 
             }

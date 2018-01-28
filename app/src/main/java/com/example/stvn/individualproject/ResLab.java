@@ -1,16 +1,13 @@
 /**
  * STEVEN CRUICKSHANK
- * PROJECT THREE - SHOW ME WHAT YOU GOT
+ * PROJECT THREE - Reservation App
  *
- * On the professors suggestion, i took the existing reservation app, and loaded it with new features
- * and a fresh new UI.
- *
- * All of the requirements are met:
+ * Features:
  * -SQLite Database ~ Date, Time, Name, Phone, and Location are written to a SQLite database
  *
  * -Location Services ~ When a user makes a reservation, location services takes note of the users
  * last location, and lists those coordinates in the DB. knowing where your reservations are coming
- * from is a fantastic way to target specific areas with advertising.
+ * from is a fantastic way to target specific areas with advertising/marketing.
  *
  * -Audio/Video ~ jazzy piano and background noises (clanking, light chatting) play while the user makes
  * their reservation. At the very top is a looping video of a nameless couple enjoying a meal.
@@ -24,8 +21,7 @@
  * prompt, via intents
  *
  * -UI that works in landscape - Designed a landscape layout for the UI that looks very nice.
- * All data is preserved on rotation. There is a slight problem with the audio, in that if you
- * rotate and attempt to stop/play, new audioclips will start to play over the existing.
+ * All data is preserved on rotation.
  */
 
 package com.example.stvn.individualproject;
@@ -53,16 +49,16 @@ import static com.example.stvn.individualproject.ResSchema.ResTable.Cols.R_TIME;
 
 // Singleton + Database
 public class ResLab {
-    public static ResLab sCrimeLab;
+    public static ResLab sResLab;
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
     public static ResLab get(Context context) {
-        if (sCrimeLab == null) {
-            sCrimeLab = new ResLab(context);
+        if (sResLab == null) {
+            sResLab = new ResLab(context);
         }
 
-        return sCrimeLab;
+        return sResLab;
     }
 
     private ResLab(Context context) {
@@ -72,12 +68,12 @@ public class ResLab {
 
     }
 
-    public void addCrime(Res c) {
+    public void addRes(Res c) {
         ContentValues values = getContentValues(c);
         mDatabase.insert(ResSchema.ResTable.NAME, null, values);
     }
 
-    public List<Res> getCrimes() {
+    public List<Res> getRes() {
         List<Res> crimes = new ArrayList<>();
         ResCursorWrapper cursor = queryCrimes(null, null);
         try {
@@ -92,7 +88,7 @@ public class ResLab {
         return crimes;
     }
 
-    public Res getCrime(UUID id) {
+    public Res getRes(UUID id) {
         ResCursorWrapper cursor = queryCrimes(
                 R_NAME + " = ?",
                 new String[]{id.toString()}
@@ -108,13 +104,6 @@ public class ResLab {
         }
     }
 
-    public void updateCrime(Res crime) {
-        //String uuidString = crime.getId().toString();
-        //ContentValues values = getContentValues(crime);
-        //mDatabase.update(ResSchema.ResTable.NAME, values,
-          //      ResSchema.ResTable.Cols.UUID + " = ?",
-            //    new String[]{uuidString});
-    }
 
     private ResCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(

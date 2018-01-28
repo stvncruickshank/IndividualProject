@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Resrv</string>
-    <string name="crime_title_hint">Enter a phone number:</string>
-    <string name="crime_title_label">Info</string>
+    <string name="res_ph_num">Enter a phone number:</string>
+    <string name="res_title_label">Info</string>
     <string name="details_label">Details and Notification Options:</string>
-    <string name="crime_solved_label">Solved</string>
     <string name="date_set_bt">Set Date</string>
     <string name="time_set_bt">Set Time</string>
     <string name="ntfy_message">SMS Message</string>
